@@ -32,3 +32,11 @@ _ext
 .pytest_cache/*
 docs/_build/
 docs/generated/
+
+# custom planners
+planTF
+instructDriver
+GLPO
+
+build
+

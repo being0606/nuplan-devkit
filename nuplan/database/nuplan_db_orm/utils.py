@@ -1336,7 +1336,7 @@ def project_lidarpcs_to_camera(
     camera_intrinsic: npt.NDArray[np.float64],
     width: int,
     height: int,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.bool8]]:
+) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.bool_]]:
     """
     Project lidar pcs to a camera and return pcs with coordinate in a camera view.
     :param pc: Lidar point clouds.

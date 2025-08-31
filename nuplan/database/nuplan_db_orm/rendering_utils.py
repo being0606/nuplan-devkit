@@ -121,7 +121,7 @@ def map_pointcloud_to_image(
     points = view_points(pc.points[:3, :], img.camera.intrinsic_np, normalize=True)
 
     # Finally filter away points outside the image.
-    mask: npt.NDArray[np.bool8] = np.ones(depths.shape[0], dtype=bool)
+    mask: npt.NDArray[np.bool_] = np.ones(depths.shape[0], dtype=bool)
     mask = np.logical_and(mask, depths > 0)
     mask = np.logical_and(mask, points[0, :] > 1)
     mask = np.logical_and(mask, points[0, :] < im.size[0] - 1)
