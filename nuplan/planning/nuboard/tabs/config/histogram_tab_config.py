@@ -3,8 +3,8 @@ from typing import Any, ClassVar, Dict, List, Optional, Tuple
 
 import numpy as np
 import numpy.typing as npt
-from bokeh.plotting import Figure
-
+# from bokeh.plotting import Figure
+from bokeh.plotting import figure
 from nuplan.planning.nuboard.style import PLOT_PALETTE
 
 
@@ -31,7 +31,7 @@ class HistogramData:
 class HistogramFigureData:
     """Histogram figure data."""
 
-    figure_plot: Figure  # Histogram statistic figure
+    figure_plot: figure  # Histogram statistic figure # fix: Figure -> figure for bokeh 3.8.0
     frequency_array: Optional[npt.NDArray[np.int64]] = None
 
 
@@ -96,7 +96,7 @@ class HistogramTabHistogramBarStyleConfig:
         }
 
     @classmethod
-    def update_histogram_bar_figure_style(cls, histogram_figure: Figure) -> None:
+    def update_histogram_bar_figure_style(cls, histogram_figure: figure) -> None: # fix: Figure -> figure for bokeh 3.8.0
         """Update histogram figure bar style."""
         histogram_figure.y_range.start = 0
         histogram_figure.legend.background_fill_alpha = 0.3
@@ -121,12 +121,12 @@ class HistogramTabFigureGridPlotStyleConfig:
 class HistogramTabFigureTitleDivStyleConfig:
     """Histogram tab figure title div style configs."""
 
-    style: ClassVar[Dict[str, str]] = {"font-size": "10pt", "width": "100%", "font-weight": "bold"}
+    styles: ClassVar[Dict[str, str]] = {"font-size": "10pt", "width": "100%", "font-weight": "bold"} # fix: style to styles for bokeh 3.8.0
 
     @classmethod
     def get_config(cls, title: str) -> Dict[str, Any]:
         """Get configs as a dict."""
-        return {'text': title, 'style': cls.style}
+        return {'text': title, 'styles': cls.styles} # fix: style to styles for bokeh 3.8.0
 
 
 @dataclass(frozen=True)
@@ -158,7 +158,7 @@ class HistogramTabFigureStyleConfig:
         }
 
     @classmethod
-    def update_histogram_figure_style(cls, histogram_figure: Figure) -> None:
+    def update_histogram_figure_style(cls, histogram_figure: figure) -> None: # fix: Figure -> figure for bokeh 3.8.0
         """Update histogram figure style."""
         histogram_figure.title.text_font_size = "8pt"
         histogram_figure.xaxis.axis_label_text_font_size = "8pt"
