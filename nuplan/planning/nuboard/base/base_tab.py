@@ -4,7 +4,8 @@ from typing import Any, List, Optional
 
 from bokeh.document.document import Document
 from bokeh.models import CheckboxGroup, MultiChoice
-from bokeh.plotting.figure import Figure
+# from bokeh.plotting.figure import Figure
+from bokeh.plotting import figure
 
 from nuplan.planning.nuboard.base.data_class import SelectedMetricStatisticDataFrame, SimulationScenarioKey
 from nuplan.planning.nuboard.base.experiment_file_data import ExperimentFileData
@@ -52,7 +53,8 @@ class BaseTab:
         self.planner_checkbox_group = CheckboxGroup(
             labels=[], active=[], inline=True, css_classes=["planner-checkbox-group"], sizing_mode="scale_both"
         )
-        self.planner_checkbox_group.on_click(self._click_planner_checkbox_group)
+        # self.planner_checkbox_group.on_click(self._click_planner_checkbox_group) # fix: on_click -> on_change for bokeh:3.8.0
+        self.planner_checkbox_group.on_change("active", self._click_planner_checkbox_group)
 
     def file_paths_on_change(
         self, experiment_file_data: ExperimentFileData, experiment_file_active_index: List[int]
@@ -64,7 +66,8 @@ class BaseTab:
         """
         raise NotImplementedError
 
-    def _click_planner_checkbox_group(self, attr: Any) -> None:
+    # def _click_planner_checkbox_group(self, attr: Any) -> None: # fix: on_click -> on_change for bokeh:3.8.0
+    def _click_planner_checkbox_group(self, attr, old, new):
         """
         Click event handler for planner_checkbox_group.
         :param attr: Clicked attributes.
@@ -122,7 +125,7 @@ class BaseTab:
         return self.scatter_signs[index]
 
     @staticmethod
-    def get_scatter_render_func(scatter_sign: str, scatter_figure: Figure) -> Any:
+    def get_scatter_render_func(scatter_sign: str, scatter_figure: figure) -> Any: # fix: Figure-> figure for bokeh:3.8.0
         """
         Render a scatter plot.
         :param scatter_sign: Scatter sign.
