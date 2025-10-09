@@ -21,7 +21,8 @@ from bokeh.events import PointEvent
 from bokeh.io.export import get_screenshot_as_png
 from bokeh.layouts import column, gridplot, row
 from bokeh.models import Button, ColumnDataSource, Slider, Title
-from bokeh.plotting.figure import Figure
+# from bokeh.plotting.figure import Figure
+from bokeh.plotting import figure
 from bokeh.server.callbacks import PeriodicCallback
 from bokeh.util.callback_manager import EventCallback
 from selenium import webdriver
@@ -230,7 +231,7 @@ class SimulationTile:
         )
         planner_name = selected_scenario_key.planner_name
         presented_planner_name = planner_name + f' ({experiment_path.stem})'
-        simulation_figure = Figure(
+        simulation_figure = figure( # fix: Figure -> figure for bokeh:3.8.0
             x_range=(-self._radius, self._radius),
             y_range=(-self._radius, self._radius),
             width=figure_sizes[0],
