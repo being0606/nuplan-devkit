@@ -23,6 +23,7 @@ from bokeh.models import (
 )
 # from bokeh.plotting.figure import Figure
 from bokeh.plotting import figure
+from bokeh.models import Range1d # add: bokeh 3.8.0 hate None
 
 from nuplan.common.actor_state.ego_state import EgoState
 from nuplan.common.actor_state.vehicle_parameters import VehicleParameters
@@ -611,6 +612,12 @@ class ScenarioTab(BaseTab):
         :param y_range: Labels in y major axis.
         :return A time series plot.
         """
+        # add: bokeh 3.8.0 hate None
+        if x_range is None:
+            x_range = Range1d()
+        if y_range is None:
+            y_range = Range1d()
+            
         scenario_scalar_figure = figure( # fix: Figure -> figure for bokeh:3.8.0
             background_fill_color=PLOT_PALETTE["background_white"],
             title=title,
@@ -916,7 +923,7 @@ class ScenarioTab(BaseTab):
         number_of_figures = ceil(len(metric_statistic_names) / self._number_metrics_per_figure)
 
         # Create figures based on the number of metrics per figure
-        scenario_metric_score_figures: Dict[str, "Figure"]  # fix: Figure -> figure for bokeh:3.8.0= defaultdict()
+        scenario_metric_score_figures: Dict[str, "Figure"] = defaultdict() # fix: Figure -> "Figure" for bokeh:3.8.0
         for index in range(number_of_figures):
             starting_index = index * self._number_metrics_per_figure
             ending_index = starting_index + self._number_metrics_per_figure
@@ -1099,7 +1106,7 @@ class ScenarioTab(BaseTab):
                     )
                 )
                 if self.expert_planner_key in planner_name:
-                    ego_expert_state_figure.circle(
+                    ego_expert_state_figure.scatter( # fix: circle -> scatter for bokeh:3.8.0
                         x="x",
                         y="y",
                         name=planner_name,
