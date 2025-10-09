@@ -399,6 +399,7 @@ class HistogramTab(BaseTab):
             **HistogramTabFigureStyleConfig.get_config(
                 title=title, x_axis_label=x_axis_label, width=plot_width, height=self.plot_sizes[1], x_range=x_range
             ),
+            y_range=Range1d(), # fix: bokeh 3.8.0 is hate None type
             tools=["pan", "wheel_zoom", "save", "reset", hover_tool],
         )
         HistogramTabFigureStyleConfig.update_histogram_figure_style(histogram_figure=statistic_figure)
