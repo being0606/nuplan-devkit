@@ -43,7 +43,8 @@ class ConfigurationTab:
             name="experiment_file_path_checkbox_group",
             css_classes=["experiment-file-path-checkbox-group"],
         )
-        self._experiment_file_path_checkbox_group.on_click(self._click_experiment_file_path_checkbox)
+        # self._experiment_file_path_checkbox_group.on_click(self._click_experiment_file_path_checkbox)
+        self._experiment_file_path_checkbox_group.on_change("active", self._click_experiment_file_path_checkbox) # fix: for bokeh3.8.0
         if self.experiment_file_data.file_paths:
             self._file_paths_on_change()
 
@@ -77,7 +78,8 @@ class ConfigurationTab:
         """Return experiment file path checkboxgroup."""
         return self._experiment_file_path_checkbox_group
 
-    def _click_experiment_file_path_checkbox(self, attr: Any) -> None:
+    # def _click_experiment_file_path_checkbox(self, attr: Any) -> None:
+    def _click_experiment_file_path_checkbox(self, attr, old, new): # fix: for bokeh3.8.0
         """
         Click event handler for experiment_file_path_checkbox_group.
         :param attr: Clicked attributes.
