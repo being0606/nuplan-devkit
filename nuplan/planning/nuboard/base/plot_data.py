@@ -8,7 +8,8 @@ from typing import Any, Dict, List, NamedTuple, Optional, Union
 import numpy as np
 from bokeh.document import Document
 from bokeh.models import Button, ColumnDataSource, GlyphRenderer, HoverTool, LayoutDOM, Legend, Slider, Title
-from bokeh.plotting.figure import Figure
+# from bokeh.plotting.figure import Figure
+from bokeh.plotting import figure
 
 from nuplan.common.actor_state.state_representation import Point2D, StateSE2
 from nuplan.common.actor_state.vehicle_parameters import VehicleParameters
@@ -127,7 +128,7 @@ class TrafficLightPlot(BaseScenarioPlot):
     data_sources: Dict[int, ColumnDataSource] = field(default_factory=dict)  # A dict of data sources for each frame
     plot: Optional[GlyphRenderer] = None  # A bokeh glyph element
 
-    def update_plot(self, main_figure: Figure, frame_index: int, doc: Document) -> None:
+    def update_plot(self, main_figure: figure, frame_index: int, doc: Document) -> None: # fix: Figure-> figure for bokeh:3.8.0
         """
         Update the plot.
         :param main_figure: The plotting figure.
@@ -213,7 +214,7 @@ class EgoStatePlot(BaseScenarioPlot):
     init_state: bool = True  # True to indicate it is in init state
     plot: Optional[GlyphRenderer] = None  # A bokeh glyph element
 
-    def update_plot(self, main_figure: Figure, radius: float, frame_index: int, doc: Document) -> None:
+    def update_plot(self, main_figure: figure, radius: float, frame_index: int, doc: Document) -> None: # fix: Figure-> figure for bokeh:3.8.0
         """
         Update the plot.
         :param main_figure: The plotting figure.
@@ -335,7 +336,7 @@ class EgoStateTrajectoryPlot(BaseScenarioPlot):
     data_sources: Dict[int, ColumnDataSource] = field(default_factory=dict)  # A dict of data sources for each frame
     plot: Optional[GlyphRenderer] = None  # A bokeh glyph element
 
-    def update_plot(self, main_figure: Figure, frame_index: int, doc: Document) -> None:
+    def update_plot(self, main_figure: figure, frame_index: int, doc: Document) -> None:
         """
         Update the plot.
         :param main_figure: The plotting figure.
@@ -426,7 +427,7 @@ class AgentStatePlot(BaseScenarioPlot):
 
         return number_track_id
 
-    def update_plot(self, main_figure: Figure, frame_index: int, doc: Document) -> None:
+    def update_plot(self, main_figure: figure, frame_index: int, doc: Document) -> None: # fix: Figure-> figure for bokeh:3.8.0
         """
         Update the plot.
         :param main_figure: The plotting figure.
@@ -557,7 +558,7 @@ class AgentStateHeadingPlot(BaseScenarioPlot):
     data_sources: Dict[int, Dict[str, ColumnDataSource]] = field(default_factory=dict)  # A dict of data for each frame
     plots: Dict[str, GlyphRenderer] = field(default_factory=dict)  # A dict of plots for each type
 
-    def update_plot(self, main_figure: Figure, frame_index: int, doc: Document) -> None:
+    def update_plot(self, main_figure: figure, frame_index: int, doc: Document) -> None: # fix: Figure-> figure for bokeh:3.8.0
         """
         Update the plot.
         :param main_figure: The plotting figure.
@@ -647,7 +648,7 @@ class SimulationFigure:
     vehicle_parameters: VehicleParameters  # Ego parameters
 
     # Rendering objects
-    figure: Figure  # Bokeh figure
+    figure: figure  # Bokeh figure
     file_path_index: int  # Experiment file index
     slider: Slider  # Bokeh slider to this figure
     video_button: Button  # Bokeh video button to this figure
