@@ -8,7 +8,9 @@ import numpy.typing as npt
 from bokeh.document.document import Document
 from bokeh.layouts import column, gridplot, layout
 from bokeh.models import Button, ColumnDataSource, Div, FactorRange, HoverTool, MultiChoice, Spinner, glyph
+# from bokeh.plotting import figure
 from bokeh.plotting import figure
+from bokeh.models import Range1d # add: bokeh 3.8.0 is hate None type
 
 from nuplan.planning.nuboard.base.base_tab import BaseTab
 from nuplan.planning.nuboard.base.experiment_file_data import ExperimentFileData
@@ -117,7 +119,8 @@ class HistogramTab(BaseTab):
         """Return histogram modal query button."""
         return self._histogram_modal_query_btn
 
-    def _click_planner_checkbox_group(self, attr: Any) -> None:
+    # def _click_planner_checkbox_group(self, attr: Any) -> None: # fix: on_click -> on_change for bokeh:3.8.0
+    def _click_planner_checkbox_group(self, attr, old, new):
         """
         Click event handler for planner_checkbox_group.
         :param attr: Clicked attributes.
@@ -380,6 +383,7 @@ class HistogramTab(BaseTab):
         """
         if x_range is None:
             len_plot_width = 1
+            x_range = Range1d() # fix: bokeh 3.8.0 is hate None type
         elif isinstance(x_range, list):
             len_plot_width = len(x_range)
         else:
@@ -391,7 +395,7 @@ class HistogramTab(BaseTab):
             tooltips.append(("File", "@histogram_file_name"))
 
         hover_tool = HoverTool(tooltips=tooltips, point_policy="follow_mouse")
-        statistic_figure = figure(
+        statistic_figure = figure( # Figure -> figure for bokeh 3.8.0
             **HistogramTabFigureStyleConfig.get_config(
                 title=title, x_axis_label=x_axis_label, width=plot_width, height=self.plot_sizes[1], x_range=x_range
             ),
