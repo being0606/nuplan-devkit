@@ -62,7 +62,8 @@ class OverviewTab(BaseTab):
 
         self._overview_on_change()
 
-    def _click_planner_checkbox_group(self, attr: Any) -> None:
+    # def _click_planner_checkbox_group(self, attr: Any) -> None: # fix: on_click -> on_change for bokeh:3.8.0
+    def _click_planner_checkbox_group(self, attr, old, new):
         """
         Click event handler for planner_checkbox_group.
         :param attr: Clicked attributes.
