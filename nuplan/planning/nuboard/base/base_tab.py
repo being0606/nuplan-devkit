@@ -40,7 +40,7 @@ class BaseTab:
             'inverted_triangle',
             'star',
             'asterisk',
-            'dot_circle',
+            'dot_circle', # fix: bokeh 3.8.0 hate 'dot_circle'
             'diamond_cross',
         ]
         self.search_criteria_selection_size = base_tab_style["search_criteria_sizes"]
