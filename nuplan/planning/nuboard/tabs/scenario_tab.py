@@ -21,7 +21,8 @@ from bokeh.models import (
     MultiChoice,
     Select,
 )
-from bokeh.plotting.figure import Figure
+# from bokeh.plotting.figure import Figure
+from bokeh.plotting import figure
 
 from nuplan.common.actor_state.ego_state import EgoState
 from nuplan.common.actor_state.vehicle_parameters import VehicleParameters
@@ -379,7 +380,8 @@ class ScenarioTab(BaseTab):
         self._scenario_metric_score_data = self._update_aggregation_metric()
         self._update_scenario_plot()
 
-    def _click_planner_checkbox_group(self, attr: Any) -> None:
+    # def _click_planner_checkbox_group(self, attr: Any) -> None: # fix: on_click -> on_change for bokeh:3.8.0
+    def _click_planner_checkbox_group(self, attr, old, new):
         """
         Click event handler for planner_checkbox_group.
         :param attr: Clicked attributes.
@@ -597,7 +599,7 @@ class ScenarioTab(BaseTab):
         x_axis_label: Optional[str] = None,
         x_range: Optional[List[str]] = None,
         y_range: Optional[List[str]] = None,
-    ) -> Figure:
+    ) -> figure: # fix: Figure -> figure for bokeh:3.8.0
         """
         Render a scalar figure.
         :param title: Plot title.
@@ -609,7 +611,7 @@ class ScenarioTab(BaseTab):
         :param y_range: Labels in y major axis.
         :return A time series plot.
         """
-        scenario_scalar_figure = Figure(
+        scenario_scalar_figure = figure( # fix: Figure -> figure for bokeh:3.8.0
             background_fill_color=PLOT_PALETTE["background_white"],
             title=title,
             css_classes=["time-series-figure"],
@@ -764,13 +766,13 @@ class ScenarioTab(BaseTab):
 
     def _render_time_series(
         self, aggregated_time_series_data: Dict[str, List[ScenarioTimeSeriesData]]
-    ) -> Dict[str, Figure]:
+    ) -> Dict[str, "Figure"]: # fix: Figure -> figure for bokeh:3.8.0
         """
         Render time series plots.
         :param aggregated_time_series_data: Aggregated scenario time series data.
         :return A dict of figure name and figures.
         """
-        time_series_figures: Dict[str, Figure] = {}
+        time_series_figures: Dict[str, "Figure"] = {} # fix: Figure -> "Figure" for bokeh:3.8.0
         for metric_statistic_name, scenario_time_series_data in aggregated_time_series_data.items():
             for data in scenario_time_series_data:
                 if not len(data.time_series_values):
@@ -819,7 +821,7 @@ class ScenarioTab(BaseTab):
         return time_series_figures
 
     def _render_scenario_metric_score_scatter(
-        self, scatter_figure: Figure, scenario_metric_score_data: Dict[str, List[ScenarioMetricScoreData]]
+        self, scatter_figure: figure, scenario_metric_score_data: Dict[str, List[ScenarioMetricScoreData]] # fix: Figure -> figure for bokeh:3.8.0
     ) -> None:
         """
         Render scatter plot with scenario metric score data.
@@ -874,7 +876,7 @@ class ScenarioTab(BaseTab):
             )
             glyph_renderer(x="xs", y="ys", size=10, fill_color="fill_colors", line_color="fill_colors", source=sources)
 
-    def _render_scenario_metric_score(self) -> Dict[str, Figure]:
+    def _render_scenario_metric_score(self) -> Dict[str, "Figure"]: # fix: Figure -> figure for bokeh:3.8.0
         """
         Render scenario metric score plot.
         :return A dict of figure names and figures.
@@ -914,7 +916,7 @@ class ScenarioTab(BaseTab):
         number_of_figures = ceil(len(metric_statistic_names) / self._number_metrics_per_figure)
 
         # Create figures based on the number of metrics per figure
-        scenario_metric_score_figures: Dict[str, Figure] = defaultdict()
+        scenario_metric_score_figures: Dict[str, "Figure"]  # fix: Figure -> figure for bokeh:3.8.0= defaultdict()
         for index in range(number_of_figures):
             starting_index = index * self._number_metrics_per_figure
             ending_index = starting_index + self._number_metrics_per_figure
@@ -935,7 +937,7 @@ class ScenarioTab(BaseTab):
             scenario_metric_score_figures[str(index)] = scenario_metric_score_figure
         return scenario_metric_score_figures
 
-    def _render_grid_plot(self, figures: Dict[str, Figure], plot_width: int, legend: bool = True) -> LayoutDOM:
+    def _render_grid_plot(self, figures: Dict[str, "Figure"],plot_width: int, legend: bool = True) -> LayoutDOM:
         """
         Render a grid plot.
         :param figures: A dict of figure names and figures.
@@ -943,7 +945,7 @@ class ScenarioTab(BaseTab):
         :param legend: If figures have legends.
         :return A grid plot.
         """
-        figure_plot_list: List[Figure] = []
+        figure_plot_list: List["Figure"] = [] # fix: Figure -> "Figure" for bokeh:3.8.0
         for figure_name, figure_plot in figures.items():
             if legend:
                 figure_plot.legend.label_text_font_size = scenario_tab_style["plot_legend_label_text_font_size"]
@@ -959,7 +961,7 @@ class ScenarioTab(BaseTab):
         return grid_plot
 
     def _render_scenario_metric_layout(
-        self, figure_data: Dict[str, Figure], default_div: Div, plot_width: int, legend: bool = True
+        self, figure_data: Dict[str, "Figure"], default_div: Div, plot_width: int, legend: bool = True # fix: Figure -> "Figure" for bokeh:3.8.0
     ) -> column:
         """
         Render a layout for scenario metric.
@@ -1065,7 +1067,7 @@ class ScenarioTab(BaseTab):
         :return Column layout for ego and expert states.
         """
         # Render figures with the state keys
-        ego_expert_state_figures: Dict[str, Figure] = defaultdict()
+        ego_expert_state_figures: Dict[str, "figure"] = defaultdict()
         for plot_state_key in self.plot_state_keys:
             hover = HoverTool(
                 tooltips=[
